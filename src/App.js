@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useReducer } from "react";
+import "./App.css";
+import { cartReducer } from "./reducers/cartReducer";
+import  ProductsData  from './components/Products'
+import  Cart  from './components/Cart'
 
-function App() {
+export default function App() {
+  const [state, dispatch] = useReducer(cartReducer, {
+    products: [],
+    cart: []
+  });
+
+  const Products = [
+    { id: 1, name: "Product-1", price: 100 },
+    { id: 2, name: "Product-2", price: 200 },
+    { id: 3, name: "Product-3", price: 300 }
+  ];
+
+  console.log(state);
+
+
+  useEffect(()=>{
+    dispatch({
+      type: "ADD_PRODUCTS",
+      payload: Products
+    })
+  },[]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{display:'flex'}}>
+     <ProductsData state={state} dispatch={dispatch} />
+     <Cart state={state} dispatch={dispatch} />
     </div>
   );
 }
-
-export default App;
